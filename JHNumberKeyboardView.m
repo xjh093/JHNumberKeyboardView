@@ -142,6 +142,12 @@
         lastNumber = text;
     }
     
+    if (_limitedLength > 0) {
+        if (_outputText.length >= _limitedLength) {
+            _outputText.string = [_outputText substringToIndex:_limitedLength];
+        }
+    }
+    
     if (_delegate &&
         [_delegate respondsToSelector:@selector(keyboardView:textDidChange:lsatNumber:)]) {
         [_delegate keyboardView:self textDidChange:_outputText lsatNumber:lastNumber];
