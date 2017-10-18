@@ -19,6 +19,7 @@
 @interface JHNumberKeyboardView : UIView
 /// show more details. default is NO.
 @property (assign,  nonatomic) BOOL  showDetails;
-
+/// text max length. 0 means no limited.
+@property (assign,  nonatomic) NSUInteger limitedLength;
 @property (weak,    nonatomic) id <JHNumberKeyboardViewDelegate> delegate;
 @end
