@@ -33,7 +33,7 @@
 
 @protocol JHNumberKeyboardViewDelegate <NSObject>
 
-- (void)keyboardView:(JHNumberKeyboardView *)keyboard textDidChange:(NSString *)text lsatNumber:(NSString *)number;
+- (void)keyboardView:(JHNumberKeyboardView *)keyboard firstResponder:(id)firstResponder textDidChange:(NSString *)text lsatNumber:(NSString *)number;
 
 @end
 
