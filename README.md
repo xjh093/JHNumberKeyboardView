@@ -1,6 +1,8 @@
 # JHNumberKeyboardView
 ### 自定义数字键盘
 
+---
+
 ## USE:
 作为 ```textField``` 与 ```textView``` 的 ```inputView``` 使用。
 
@@ -27,6 +29,8 @@ example:
 
 ```
 
+---
+
 ## Logs:
 
 ### 2018-5-11:
@@ -44,6 +48,9 @@ example:
 #### ~~2.点击textField & textView 右侧的删除按钮，清空内容。（并没有删除保存的数字）~~
 #### ~~3.同时有多个textField & textView 使用一个 JHNumberKeyboardView 实例时，无法区分。~~
 
+---
+
+## What is it?
 
 ![image](https://github.com/xjh093/JHNumberKeyboardView/blob/master/Screen%20Shot%202017-10-17%20at%2017.48.51.png)
 
