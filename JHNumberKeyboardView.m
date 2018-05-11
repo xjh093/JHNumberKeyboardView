@@ -28,15 +28,22 @@
 //  SOFTWARE.
 
 #import "JHNumberKeyboardView.h"
+#import "UIResponder+JHFirstResponder.h"
 
 #define kJHNumberKeyboardViewDeleteTitle @"<-"
 
 @interface JHNumberKeyboardView()
-@property (strong,  nonatomic) NSMutableString *outputText;
 @property (strong,  nonatomic) NSMutableArray *labelArray;
+
+@property (nonatomic,    weak) id firstResponder;
+
 @end
 
 @implementation JHNumberKeyboardView
+
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -52,7 +59,6 @@
 
 - (void)jhSetupViews:(CGRect)frame
 {
-    _outputText = @"".mutableCopy;
     _labelArray = @[].mutableCopy;
     
     self.backgroundColor = [UIColor colorWithRed:209/255.0 green:213/255.0 blue:219/255.0 alpha:1];
@@ -97,6 +103,17 @@
             [self jhSetupLine:CGRectMake(0, (i-3)*H, CGRectGetWidth(frame), 0.5)];
         }
     }
+    
+    // iPhone X
+    CGFloat statusBarHeight = CGRectGetHeight([[UIApplication sharedApplication] statusBarFrame]);
+    if (statusBarHeight == 44) {
+        CGRect frame = self.frame;
+        frame.size.height += 34;
+        self.frame = frame;
+        
+        // line
+        [self jhSetupLine:CGRectMake(0, 4*H, CGRectGetWidth(frame), 0.5)];
+    }
 }
 
 #pragma mark -
@@ -123,13 +140,13 @@
     [self addSubview:view];
 }
 
+#pragma mark -
 - (void)xx_touch_down:(UIButton *)button{
     if (button.tag == 11) {
         button.backgroundColor = [UIColor whiteColor];
     }else{
         button.backgroundColor = [UIColor clearColor];
     }
-    
 }
 
 - (void)xx_touchup_outside:(UIButton *)button{
@@ -138,7 +155,6 @@
     }else{
         button.backgroundColor = [UIColor whiteColor];
     }
-    
 }
 
 - (void)xx_click_button:(UIButton *)button{
@@ -148,33 +164,67 @@
         button.backgroundColor = [UIColor whiteColor];
     }
     
+    id firstResponder = [UIResponder jh_currentFirstResponder];
+    if ([firstResponder isKindOfClass:[UITextField class]]) {
+        if (_firstResponder != firstResponder) {
+            _firstResponder = firstResponder;
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(xx_textChanged:) name:UITextFieldTextDidChangeNotification object:firstResponder];
+        }
+    }else if ([firstResponder isKindOfClass:[UITextView class]]) {
+        if (_firstResponder != firstResponder) {
+            _firstResponder = firstResponder;
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(xx_textChanged:) name:UITextViewTextDidChangeNotification object:firstResponder];
+        }
+    }
+    else{
+        _firstResponder = nil;
+    }
+    
     [self xx_text_changed:[button currentTitle]];
+}
+
+- (void)xx_textChanged:(NSNotification *)noti
+{
+    if (_firstResponder == noti.object) {
+        NSString *text = [_firstResponder text];
+        
+        if (_limitedLength > 0 && text.length > _limitedLength) {
+            [_firstResponder setText:[[_firstResponder text] substringToIndex:_limitedLength]];
+        }
+    }
 }
 
 - (void)xx_text_changed:(NSString *)text{
     NSString *lastNumber = @"";
     if ([text isEqualToString:kJHNumberKeyboardViewDeleteTitle]) {
-        if (_outputText.length > 0) {
-            lastNumber = [_outputText substringFromIndex:_outputText.length - 1];
-            _outputText.string = [_outputText substringToIndex:_outputText.length - 1];
-        }
+        
+        //NSLog(@"firstResponder: %@",_firstResponder);
+        
+        NSString *willDeletedText =  [_firstResponder textInRange:[_firstResponder selectedTextRange]];
+        lastNumber = willDeletedText;
+        
+        // delete character
+        [_firstResponder deleteBackward];
+        
     }else{
-        [_outputText appendString:text];
+        
+        // limit judge.
+        [_firstResponder insertText:text];
+        if (_limitedLength > 0) {
+            if ([_firstResponder text].length + text.length > _limitedLength) {
+                [_firstResponder setText:[[_firstResponder text] substringToIndex:_limitedLength]];
+            }
+        }
         lastNumber = text;
     }
     
-    if (_limitedLength > 0) {
-        if (_outputText.length >= _limitedLength) {
-            _outputText.string = [_outputText substringToIndex:_limitedLength];
-        }
-    }
-    
     if (_delegate &&
-        [_delegate respondsToSelector:@selector(keyboardView:textDidChange:lsatNumber:)]) {
-        [_delegate keyboardView:self textDidChange:_outputText lsatNumber:lastNumber];
+        [_delegate respondsToSelector:@selector(keyboardView:firstResponder:textDidChange:lsatNumber:)]) {
+        [_delegate keyboardView:self firstResponder:_firstResponder textDidChange:[_firstResponder text] lsatNumber:lastNumber];
     }
 }
 
+#pragma mark -
 - (void)setShowDetails:(BOOL)showDetails{
     _showDetails = showDetails;
     if (showDetails) {
@@ -189,3 +239,4 @@
     }
 }
 @end
+
