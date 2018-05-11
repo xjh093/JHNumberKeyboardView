@@ -4,12 +4,37 @@
 ## USE:
 作为 ```textField``` 与 ```textView``` 的 ```inputView``` 使用。
 
+example:
+```
+    JHNumberKeyboardView *keyboard = [[JHNumberKeyboardView alloc] initWithFrame:CGRectMake(0, kScreenHeight-216, kScreenWidth, 216)];
+    keyboard.delegate = self;
+    _keyboard = keyboard;
+    textField.inputView = keyboard;
+
+    #pragma mark - JHNumberKeyboardViewDelegate
+
+    - (void)keyboardView:(JHNumberKeyboardView *)keyboard firstResponder:(id)firstResponder textDidChange:(NSString *)text lsatNumber:(NSString *)number{
+    
+      NSLog(@"text:%@,number:%@",text,number);
+      
+      if (firstResponder == nameTextField) {
+         // code goes here.
+      }else if (firstResponder == phoneTextField) {
+         // code goes here.
+      }
+      
+}
+
+```
 
 ## Logs:
 
 ### 2018-5-11:
 #### 1.处理了之前的所有问题。
+
 #### 2.选择范围删除时，会返回删除的数字。
+
+---
 
 ### 2017-10-17:
 #### ~~1.会保存输入的数字，及最后一位~~
