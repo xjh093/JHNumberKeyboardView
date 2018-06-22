@@ -52,9 +52,16 @@
     frame = CGRectMake(CGRectGetMinX(frame), CGRectGetMinY(frame), W, H);
     self = [super initWithFrame:frame];
     if (self) {
-        [self jhSetupViews:frame];
+        //[self jhSetupViews:frame];
     }
     return self;
+}
+
+- (void)layoutSubviews{
+    [_labelArray removeAllObjects];
+    [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [self jhSetupViews:self.bounds];
+    [self setShowDetails:_showDetails];
 }
 
 - (void)jhSetupViews:(CGRect)frame
