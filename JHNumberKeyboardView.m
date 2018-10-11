@@ -30,6 +30,7 @@
 #import "JHNumberKeyboardView.h"
 #import "UIResponder+JHFirstResponder.h"
 
+#define kJHNumberKeyboardViewHeight 216.0
 #define kJHNumberKeyboardViewDeleteTitle @"<-"
 
 @interface JHNumberKeyboardView()
@@ -48,7 +49,7 @@
 - (instancetype)initWithFrame:(CGRect)frame
 {
     CGFloat W = [UIScreen mainScreen].bounds.size.width;
-    CGFloat H = 216;
+    CGFloat H = #define kJHNumberKeyboardViewHeight;
     frame = CGRectMake(CGRectGetMinX(frame), CGRectGetMinY(frame), W, H);
     self = [super initWithFrame:frame];
     if (self) {
@@ -71,7 +72,7 @@
     self.backgroundColor = [UIColor colorWithRed:209/255.0 green:213/255.0 blue:219/255.0 alpha:1];
     NSArray *details = @[@"ABC",@"DEF",@"GHI",@"JKL",@"MNO",@"PQRS",@"TUV",@"WXYZ"];
     
-    CGFloat W = CGRectGetWidth(frame)/3.0, H = CGRectGetHeight(frame)/4.0;
+    CGFloat W = CGRectGetWidth(frame)/3.0, H = kJHNumberKeyboardViewHeight/4.0;
     for (int i = 0; i < 12; ++i) {
         CGRect rect = CGRectMake(i%3*W, i/3*H, W, H);
         
@@ -105,22 +106,33 @@
     //lines
     for (int i = 0; i < 7; ++i) {
         if (i < 3) {
-            [self jhSetupLine:CGRectMake((i+1)*W, 0, 0.5, CGRectGetHeight(frame))];
+            [self jhSetupLine:CGRectMake((i+1)*W, 0, 0.5, kJHNumberKeyboardViewHeight)];
         }else{
             [self jhSetupLine:CGRectMake(0, (i-3)*H, CGRectGetWidth(frame), 0.5)];
         }
     }
     
     // iPhone X
-    CGFloat statusBarHeight = CGRectGetHeight([[UIApplication sharedApplication] statusBarFrame]);
-    if (statusBarHeight == 44) {
-        CGRect frame = self.frame;
-        frame.size.height += 34;
-        self.frame = frame;
+    CGSize size = [UIScreen mainScreen].bounds.size;
+    CGFloat maxH = MAX(size.height, size.width);
+    CGFloat offsetY = 0;
+    if (maxH == 812.0 || maxH == 896.0) {
+        if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortrait ||
+            [[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortraitUpsideDown) {
+            offsetY = 34.0;
+        }else{
+            offsetY = 21.0;
+        }
         
-        // line
         [self jhSetupLine:CGRectMake(0, 4*H, CGRectGetWidth(frame), 0.5)];
     }
+    
+    CGRect newFrame = self.frame;
+    newFrame.origin.y = 44 - offsetY;
+    newFrame.size.height = 216 + offsetY;
+    self.frame = newFrame;
+    
+    //NSLog(@"kb frame2:%@",NSStringFromCGRect(self.frame));
 }
 
 #pragma mark -
