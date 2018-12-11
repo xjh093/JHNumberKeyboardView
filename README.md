@@ -9,7 +9,7 @@
 example:
 ```
     JHNumberKeyboardView *keyboard = [[JHNumberKeyboardView alloc] initWithFrame:CGRectMake(0, kScreenHeight-216, kScreenWidth, 216)];
-    keyboard.delegate = self;
+    keyboard.delegate = self; // no need to set delegate if you use as 'inputView'
     _keyboard = keyboard;
     textField.inputView = keyboard;
 
@@ -32,6 +32,9 @@ example:
 ---
 
 ## Logs:
+
+### 2018-12-11:
+#### 1.add Demo and fix bugs.
 
 ### 2018-10-11:
 #### 1.iPhoneX bug fix。
@@ -58,8 +61,8 @@ example:
 
 ## What is it?
 
-![image](https://github.com/xjh093/JHNumberKeyboardView/blob/master/Screen%20Shot%202017-10-17%20at%2017.48.51.png)
+![image](https://github.com/xjh093/JHNumberKeyboardView/blob/master/Image/Screen%20Shot%202017-10-17%20at%2017.48.51.png)
 
-![image](https://github.com/xjh093/JHNumberKeyboardView/blob/master/Screen%20Shot%202017-10-17%20at%2017.48.59.png)
+![image](https://github.com/xjh093/JHNumberKeyboardView/blob/master/Image/Screen%20Shot%202017-10-17%20at%2017.48.59.png)
 
-![image](https://github.com/xjh093/JHNumberKeyboardView/blob/master/Screen%20Shot%202017-10-17%20at%2017.49.36.png)
+![image](https://github.com/xjh093/JHNumberKeyboardView/blob/master/Image/Screen%20Shot%202017-10-17%20at%2017.49.36.png)
