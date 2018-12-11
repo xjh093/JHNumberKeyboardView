@@ -49,11 +49,11 @@
 - (instancetype)initWithFrame:(CGRect)frame
 {
     CGFloat W = [UIScreen mainScreen].bounds.size.width;
-    CGFloat H = #define kJHNumberKeyboardViewHeight;
+    CGFloat H = kJHNumberKeyboardViewHeight;
     frame = CGRectMake(CGRectGetMinX(frame), CGRectGetMinY(frame), W, H);
     self = [super initWithFrame:frame];
     if (self) {
-        //[self jhSetupViews:frame];
+        _showDetails = YES;
     }
     return self;
 }
@@ -113,25 +113,27 @@
     }
     
     // iPhone X
-    CGSize size = [UIScreen mainScreen].bounds.size;
-    CGFloat maxH = MAX(size.height, size.width);
-    CGFloat offsetY = 0;
-    if (maxH == 812.0 || maxH == 896.0) {
-        if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortrait ||
-            [[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortraitUpsideDown) {
-            offsetY = 34.0;
-        }else{
-            offsetY = 21.0;
+    if (_useAsInputview) {
+        CGSize size = [UIScreen mainScreen].bounds.size;
+        CGFloat maxH = MAX(size.height, size.width);
+        CGFloat offsetY = 0;
+        if (maxH == 812.0 || maxH == 896.0) {
+            if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortrait ||
+                [[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortraitUpsideDown) {
+                offsetY = 34.0;
+            }else{
+                offsetY = 21.0;
+            }
+            
+            [self jhSetupLine:CGRectMake(0, 4*H, CGRectGetWidth(frame), 0.5)];
         }
         
-        [self jhSetupLine:CGRectMake(0, 4*H, CGRectGetWidth(frame), 0.5)];
+        CGRect newFrame = self.frame;
+        newFrame.origin.y = -offsetY;
+        newFrame.size.height = 216 + offsetY;
+        self.frame = newFrame;
     }
-    
-    CGRect newFrame = self.frame;
-    newFrame.origin.y = 44 - offsetY;
-    newFrame.size.height = 216 + offsetY;
-    self.frame = newFrame;
-    
+
     //NSLog(@"kb frame2:%@",NSStringFromCGRect(self.frame));
 }
 
@@ -239,15 +241,14 @@
     
     if (_delegate &&
         [_delegate respondsToSelector:@selector(keyboardView:firstResponder:textDidChange:lsatNumber:)]) {
-        [_delegate keyboardView:self firstResponder:_firstResponder textDidChange:[_firstResponder text] lsatNumber:lastNumber];
+        [_delegate keyboardView:self firstResponder:_firstResponder textDidChange:_firstResponder?[_firstResponder text]:text lsatNumber:lastNumber];
     }
 }
 
-#pragma mark -
+#pragma mark - setter
 - (void)setShowDetails:(BOOL)showDetails{
     _showDetails = showDetails;
     if (showDetails) {
-        //[_labelArray makeObjectsPerformSelector:@selector(setHidden:) withObject:@(0)];
         [_labelArray enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL * _Nonnull stop) {
             label.hidden = NO;
         }];
@@ -257,5 +258,6 @@
         }];
     }
 }
+
 @end
 

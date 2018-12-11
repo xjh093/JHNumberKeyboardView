@@ -38,9 +38,13 @@
 @end
 
 @interface JHNumberKeyboardView : UIView
-/// show more details. default is NO.
+/// show more details. default is YES.
 @property (assign,  nonatomic) BOOL  showDetails;
 /// text max length. 0 means no limited.
 @property (assign,  nonatomic) NSUInteger limitedLength;
+/// You should set "YES" for use as inputView of "UITextField" or "UITextView"
+@property (nonatomic,  assign) BOOL  useAsInputview;
+/// 
 @property (weak,    nonatomic) id <JHNumberKeyboardViewDelegate> delegate;
+
 @end
