@@ -1,9 +1,20 @@
 # JHNumberKeyboardView
-### 自定义数字键盘
+nubmer keyboard view
+- 自定义数字键盘
 
 ---
 
-## USE:
+# What
+
+![image](https://github.com/xjh093/JHNumberKeyboardView/blob/master/Image/Screen%20Shot%202017-10-17%20at%2017.48.51.png)
+
+![image](https://github.com/xjh093/JHNumberKeyboardView/blob/master/Image/Screen%20Shot%202017-10-17%20at%2017.48.59.png)
+
+![image](https://github.com/xjh093/JHNumberKeyboardView/blob/master/Image/Screen%20Shot%202017-10-17%20at%2017.49.36.png)
+
+---
+
+# Usage
 作为 ```textField``` 与 ```textView``` 的 ```inputView``` 使用。
 
 example:
@@ -31,38 +42,31 @@ example:
 
 ---
 
-## Logs:
+# Logs:
 
-### 2018-12-11:
-#### 1.add Demo and fix bugs.
+### 2018-12-11
+- add Demo and fix bugs.
 
-### 2018-10-11:
-#### 1.iPhoneX bug fix。
+### 2018-10-11
+- iPhoneX bug fix.
 
 ### 2018-6-22:
-#### 1.适配横坚屏。
+- 适配横坚屏.
 
 ### 2018-5-11:
-#### 1.处理了之前的所有问题。
-
-#### 2.选择范围删除时，会返回删除的数字。
+- 处理了之前的所有问题.
+- 选择范围删除时，会返回删除的数字.
 
 ---
 
 ### 2017-10-17:
-#### ~~1.会保存输入的数字，及最后一位~~
+- ~~会保存输入的数字，及最后一位~~
 
-#### ~~以下情况没有处理：~~
-#### ~~1.移动光标再删除。（代理给出的是，从后往前删除）~~
-#### ~~2.点击textField & textView 右侧的删除按钮，清空内容。（并没有删除保存的数字）~~
-#### ~~3.同时有多个textField & textView 使用一个 JHNumberKeyboardView 实例时，无法区分。~~
+- ~~以下情况没有处理：~~
+    - ~~1.移动光标再删除。（代理给出的是，从后往前删除）~~
+    - ~~2.点击textField & textView 右侧的删除按钮，清空内容。（并没有删除保存的数字）~~
+    - ~~3.同时有多个textField & textView 使用一个 JHNumberKeyboardView 实例时，无法区分。~~
 
 ---
 
-## What is it?
 
-![image](https://github.com/xjh093/JHNumberKeyboardView/blob/master/Image/Screen%20Shot%202017-10-17%20at%2017.48.51.png)
-
-![image](https://github.com/xjh093/JHNumberKeyboardView/blob/master/Image/Screen%20Shot%202017-10-17%20at%2017.48.59.png)
-
-![image](https://github.com/xjh093/JHNumberKeyboardView/blob/master/Image/Screen%20Shot%202017-10-17%20at%2017.49.36.png)
